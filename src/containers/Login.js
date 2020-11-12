@@ -8,7 +8,7 @@ import {loginAction} from '../actions/usersActions';
 
 class Login extends Component{
 
-    componentWillMount(){
+    componentDidMount(){
         if(this.props.isLogged === true){
             this.props.history.push('/');
         }
@@ -16,7 +16,7 @@ class Login extends Component{
 
     handlerLogin = (email,password) => {
         this.props.login(email,password);
-        //this.props.history.push('/');
+        this.props.history.push('/');
     }
 
     render(){

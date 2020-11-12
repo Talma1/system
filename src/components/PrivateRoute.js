@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import {Route, Redirect} from 'react-router-dom';
 
 
-const PrivateRoute = ({path, component: Component, requiredRole, ...rest}) => {
+const PrivateRoute = ({path, component: Component, requiredRole, role, ...rest}) => {
     return (
         <Route path={path} {...rest} render={props =>{
-            if(this.props.role === requiredRole){
+            if(role === requiredRole){
                 return <Component {...props} {...rest}/>; 
             }
             return <Redirect to="/"/>

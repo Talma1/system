@@ -8,14 +8,21 @@ import {
   } from "react-router-dom";
 import { connect } from 'react-redux';
 import Home from "./Home";
-import NoFound from "./containers/NoFound";
+import NotFound from "./containers/NotFound";
 import Login from './containers/Login';
 import Register from './containers/Register';
-import Stuff from "./Stuff";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer} from 'react-toastify';
 import { logoutAction } from "./actions/usersActions";
 import PrivateRoute from "./components/PrivateRoute";
+
+import CompanyManagment from "./containers/CompanyManagment";
+import CustomersManagment from "./containers/CustomersManagment";
+import CouponManagment from "./containers/CouponManagment";
+import CouponStore from "./containers/CouponStore";
+import UserCoupons from "./containers/UserCoupons";
+import UserDetailes from "./containers/UserDetailes";
+
  
 class Main extends Component {
   render() {
@@ -62,15 +69,15 @@ class Main extends Component {
                     <Route path="/Login" component={Login}/>
                     <Route path="/Register" component={Register}/> 
                     {/* Administrator routes*/}
-                    <PrivateRoute path="/company-manage" component={} requiredRole={Administrator}/>
-                    <PrivateRoute path="/customers-manage" component={} requiredRole={Administrator}/>
+                    <PrivateRoute path="/company-manage" component={CompanyManagment} requiredRole={Administrator}/>
+                    <PrivateRoute path="/customers-manage" component={CustomersManagment} requiredRole={Administrator}/>
                     {/* Company routes */}
-                    <PrivateRoute path="/coupon-manage" component={} requiredRole={Company}/>
+                    <PrivateRoute path="/coupon-manage" component={CouponManagment} requiredRole={Company}/>
                     {/* Customer routes */}
-                    <PrivateRoute path="/store" component={} requiredRole={Customer}/>
-                    <PrivateRoute path="/coupons" component={} requiredRole={Customer}/>
-                    <PrivateRoute path="/detailes" component={} requiredRole={Customer}/>
-                    <Route component={NoFound}/>
+                    <PrivateRoute path="/store" component={CouponStore} requiredRole={Customer}/>
+                    <PrivateRoute path="/coupons" component={UserCoupons} requiredRole={Customer}/>
+                    <PrivateRoute path="/detailes" component={UserDetailes} requiredRole={Customer}/>
+                    <Route component={NotFound}/>
                 </Switch>
             </div>
         </Router>

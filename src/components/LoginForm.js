@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Form, Button} from "semantic-ui-react";
 
 class LoginForm extends Component {
     constructor(){
@@ -28,20 +29,16 @@ class LoginForm extends Component {
 
 
     render() {
+        const login_form = {
+            padding: "20px"
+        };
         return (
-            <form className="login-form" onSubmit = {this.handlerSubmit}>
-             
-                
-                <div className= "form-group">
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input type="text" value={this.state.user.email} onChange={(e)=> this.handlerChangeUser('email', e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"></input>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Password</label>
-                    <input type="password" value={this.state.user.password} onChange={(e)=> this.handlerChangeUser('password', e.target.value)} className="form-control" id="exampleInputPassword1" placeholder="Password" autoComplete="true"></input>
-                </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
+
+            <Form className="login-form" style={login_form} onSubmit={this.handlerSubmit}>
+                <Form.Input label='Enter Username' type='text' placeholder="username" value={this.state.user.email} onChange={(e)=> this.handlerChangeUser('email', e.target.value)}/>
+                <Form.Input label='Enter Password' type='password' placeholder="password" value={this.state.user.password} onChange={(e)=> this.handlerChangeUser('password', e.target.value)}/>
+                <Button type='submit'>Submit</Button>
+            </Form>
 
         )
     }

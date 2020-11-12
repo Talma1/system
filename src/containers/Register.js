@@ -8,15 +8,15 @@ import {registerAction} from '../actions/usersActions';
 
 class Register extends Component{
 
-    componentWillMount(){
+    componentDidMount(){
         if(this.props.isLogged === true){
             this.props.history.push('/');
         }
     }
 
-    handlerRegister = (email,password, role, id) => {
-        this.props.register(email,password, role, id);
-        //this.props.history.push('/');
+    handlerRegister = (user) => {
+        this.props.register(user);
+        this.props.history.push('/');
     }
 
     render(){
@@ -39,8 +39,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-        register: (email,password, role, id) => {
-            dispatch(registerAction(email,password,role, id));
+        register: (user) => {
+            dispatch(registerAction(user));
         }
 	}
 }

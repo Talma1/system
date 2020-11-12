@@ -1,4 +1,12 @@
 import React, { Component } from 'react';
+import {Form, Button} from "semantic-ui-react";
+import { User } from '../models/users';
+
+const permissions = [
+    { key: 'Administrator', text: 'Administrator', value: 'Administrator' },
+    { key: 'Company', text: 'Company', value: 'Company' },
+    { key: 'Customer', text: 'Customer', value: 'Customer' },
+  ]
 
 class RegisterForm extends Component {
     constructor(){
@@ -14,6 +22,7 @@ class RegisterForm extends Component {
 
     }
     handlerChangeUser=(property, value)=>{
+        console.log(value);
         let user = this.state.user;
         user[property] = value;
         
@@ -24,33 +33,32 @@ class RegisterForm extends Component {
 
     handlerSubmit = (e) =>{
         e.preventDefault();
-        this.props.handlerRegister(this.state.user.email, this.state.user.password, this.state.user.role, "s8989898");
+        const user = new User(); 
+        user.password = this.state.user.password;
+        user.username = this.state.user.username;
+        user.permissions = this.state.user.role;
+        this.props.handlerRegister(user);
     }
 
 
     render() {
+        const login_form = {
+            padding: "20px"
+        };
         return (
-            <form className="login-form" onSubmit = {this.handlerSubmit}>
-                <div className= "form-group">
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input type="text" value={this.state.user.email} onChange={(e)=> this.handlerChangeUser('email', e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"></input>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Password</label>
-                    <input type="password" value={this.state.user.password} onChange={(e)=> this.handlerChangeUser('password', e.target.value)} className="form-control" id="exampleInputPassword1" placeholder="Password" autoComplete="true"></input>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="role">Role</label>
-                    <select name="role" id="role" className="form-control" value={this.state.user.role} onChange={(e)=> this.handlerChangeUser('role', e.target.value)}>
-                        <option value="Administrator">Administrator</option>
-                        <option value="Company">Company</option>
-                        <option value="Customer">Customer</option>
-                    </select>
-                </div>
-                
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-
+            <Form className="login-form" style={login_form} onSubmit={this.handlerSubmit}>
+                <Form.Input label='Enter Username' type='text' placeholder="username" value={this.state.user.email} onChange={(e)=> this.handlerChangeUser('username', e.target.value)}/>
+                <Form.Input label='Enter Password' type='password' placeholder="password" value={this.state.user.password} onChange={(e)=> this.handlerChangeUser('password', e.target.value)}/>
+                <Form.Select
+                    fluid
+                    label='Role'
+                    value={this.state.user.role}
+                    options={permissions}
+                    placeholder='Role'
+                    onChange={(e)=> this.handlerChangeUser('role', e.target.textContent)}
+                />
+                <Button type='submit'>Submit</Button>
+            </Form>
         )
     }
         
