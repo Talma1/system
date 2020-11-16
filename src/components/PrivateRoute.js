@@ -4,14 +4,20 @@ import {Route, Redirect} from 'react-router-dom';
 
 
 const PrivateRoute = ({path, component: Component, requiredRole, role, ...rest}) => {
+
+    function handlePermissionCheck(role,requiredRole){
+        return requiredRole.some(item => role === item);
+    }
+
     return (
         <Route path={path} {...rest} render={props =>{
-            if(role === requiredRole){
+            if(handlePermissionCheck(role, requiredRole)){
                 return <Component {...props} {...rest}/>; 
             }
             return <Redirect to="/"/>
         }}/>
     );
+    
 }
 
 

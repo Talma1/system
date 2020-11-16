@@ -31,7 +31,7 @@ const CustomersTable = ({
 
   // table columns
   const columns = [
-    'personalNumber', 'avatar', 'username', 'tableActions',
+    'id', 'avatar', 'email', 'firstName', 'lastName', 'tableActions',
   ]
   return (
     <SmartDataTable

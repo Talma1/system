@@ -6,7 +6,7 @@ import {editCouponAction} from '../../../actions/couponsActions';
 
 
 const EditCoupon = (coupon) =>{
-    const fields = ["personalNumber", "username"];
+    const fields = ["title", "description", "price", "image"];
     coupon = coupon["coupon"]
     const [fieldsState, setFieldsState] = useState(coupon)
     const [modalOpen, setModalOpen] = useState(false)

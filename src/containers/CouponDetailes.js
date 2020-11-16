@@ -1,40 +1,39 @@
 import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import {
-    Divider, Grid, Header, Icon, Image, Placeholder, Segment, Table,
+    Divider, Grid, Header, Icon, Placeholder, Segment, Table,
   } from 'semantic-ui-react';
-import {getUserDetails} from '../actions/usersActions';
+import {getCouponDetails} from '../actions/couponsActions';
 
 
-const UserDetails = (props) => {
+const CouponDetails = (props) => {
 
-    const [user, setUser] = useState(null)
+    const [coupon, setcoupon] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [userId, setUserId] = useState(null)
+    const [couponId, setcouponId] = useState(null)
 
     useEffect(()=>{
-        if(!user && !userId){
+        if(!coupon && !couponId){
             setIsLoading(true);
-            let temp_user_id = initiateUserId();
-            setUserId(temp_user_id);
-            getUserDetails(temp_user_id).then((data)=>{
-                delete data.coupons; // Cant be displayed like other fields.
-                setUser(data);
+            let temp_coupon_id = getcouponId();
+            setcouponId(temp_coupon_id);
+            getCouponDetails(temp_coupon_id).then((data)=>{
+                setcoupon(data);
                 setIsLoading(false);
             })
         }
     }, [])
     
-    const initiateUserId = () => {
-        const isUserIdExists = typeof props.match.params.userId !== 'undefined';
-        return (isUserIdExists ? props.match.params.userId : props.userId);
+    const getcouponId = () => {
+        const iscouponIdExists = typeof props.match.params.couponId !== 'undefined';
+        return (iscouponIdExists ? props.match.params.couponId : props.couponId);
     }
 
     return(
         <Segment>
         <Header>
-            <Icon name="user" />
-            <Header.Content>User Details</Header.Content>
+            <Icon name="coupon" />
+            <Header.Content>coupon Details</Header.Content>
         </Header>
         <Divider hidden />
         {isLoading && (
@@ -51,31 +50,20 @@ const UserDetails = (props) => {
             </Placeholder>
         )}
         
-        {!isLoading && user && (
+        {!isLoading && coupon && (
             <Grid stackable>
-            <Grid.Row columns={2}>
-                <Grid.Column width={4} textAlign="center" verticalAlign="top">
-                {(user.avatar) && (
-                    <Image
-                    src={(user.avatar)}
-                    verticalAlign="top"
-                    centered
-                    circular
-                    size="small"
-                    />
-                )}
-                </Grid.Column>
+            <Grid.Row columns={1}>
                 <Grid.Column width={12}>
                 <Table basic="very">
                     <Table.Body>
-                    {Object.keys(user).map((key) => ( // remove coupons key
+                    {Object.keys(coupon).map((key) => (
                         <Table.Row key={key}>
                         <Table.Cell collapsing>
                             <strong>
                             {key}
                             </strong>
                         </Table.Cell>
-                        <Table.Cell>{user[key]}</Table.Cell>
+                        <Table.Cell>{coupon[key]}</Table.Cell>
                         </Table.Row>
                     ))}
                     </Table.Body>
@@ -93,7 +81,7 @@ const UserDetails = (props) => {
 
 const mapStateToProps = state => {
 	return {
-		userId: state.usersReducer.userId, // Relevant if it's the user looking at his own details.
+		couponId: state.couponsReducer.couponId, 
 	}
 }
 
@@ -103,4 +91,4 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-export default connect( mapStateToProps, mapDispatchToProps ) (UserDetails);
+export default connect( mapStateToProps, mapDispatchToProps ) (CouponDetails);

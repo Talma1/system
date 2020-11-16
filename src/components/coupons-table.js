@@ -1,7 +1,6 @@
 // Imports
 import React from 'react'
 import SmartDataTable from 'react-smart-data-table'
-import { connect } from 'react-redux';
 import { Message } from 'semantic-ui-react'
 import ViewCoupon from './smart-table/coupon-buttons/view-coupon'
 import EditCoupon from './smart-table/coupon-buttons/edit-coupon'
@@ -28,7 +27,7 @@ const CouponsTable = ({
 
   // table columns
   const columns = [
-    'personalNumber', 'avatar', 'username', 'tableActions',
+    'id', 'title', 'price', 'company', 'image', 'tableActions',
   ]
   return (
     <SmartDataTable
@@ -53,16 +52,4 @@ const CouponsTable = ({
 }
 
 
-const mapStateToProps = state => {
-	return {
-		coupons: state.couponsReducer.coupons
-	}
-}
-
-const mapDispatchToProps = dispatch => {
-	return {
-        
-	}
-}
-
-export default connect( mapStateToProps, mapDispatchToProps ) (CouponsTable);
+export default CouponsTable;

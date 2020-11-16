@@ -1,25 +1,27 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
 import CouponTable from "../components/coupons-table";
-import {getCouponListAction} from "../actions/couponsActions";
+import {connect} from "react-redux";
+import {getComapnyCouponsAction} from "../actions/couponsActions";
 import {
     Divider, Header, Icon, Placeholder, Segment,
-  } from 'semantic-ui-react'
+  } from 'semantic-ui-react';
+import AddNewCoupon from "../components/add-coupon";
 
 class CouponManagment extends Component{
 
     constructor(){
         super();
-        this.state = {isLoading:true};
+        this.state = {isLoading:true, coupons:[]};
     }
-
-    async componentDidMount() {
-        await this.props.getCouponList();   // GET request
-        this.setState({isLoading: false});
+    componentDidMount() {
+        getComapnyCouponsAction(this.props.userId).then((data)=>{
+            this.setState({isLoading: false, coupons: data});
+        });  // GET request
+        
     }
 
     render(){
-        const {isLoading} = this.state
+        const {isLoading, coupons} = this.state
         return(
             <Segment>
                 <Header as="h2" icon textAlign="center">
@@ -48,7 +50,8 @@ class CouponManagment extends Component{
                 )}
                 {!isLoading && (
                     <div className= "Coupon-managment-page">
-                        <CouponTable perPage={10}/>
+                        <AddNewCoupon/>
+                        <CouponTable perPage={10} coupons={coupons}/>
                     </div>
                 )}
             </Segment>
@@ -57,18 +60,15 @@ class CouponManagment extends Component{
 
 }
 
-
 const mapStateToProps = state => {
 	return {
-		
+		userId: state.usersReducer.userId
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-        getCouponList: () => {
-            dispatch(getCouponListAction());
-        }
+        
 	}
 }
 

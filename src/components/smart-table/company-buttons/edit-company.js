@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import {
-  Button, Form, Grid, Image, Message, Modal,
+  Button, Form, Grid, Modal,
 } from 'semantic-ui-react'
 import {editCompanyAction} from '../../../actions/usersActions';
 
 
 const EditCompany = (company) =>{
-    const fields = ["personalNumber", "username"];
+    const fields = ["email", "firstName", "lastName", "password"];
     company = company["company"]
     const [fieldsState, setFieldsState] = useState(company)
     const [modalOpen, setModalOpen] = useState(false)

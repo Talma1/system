@@ -7,7 +7,7 @@ import {editCustomerAction} from '../../../actions/usersActions';
 
 
 const EditCustomer = (customer) =>{
-    const fields = ["personalNumber", "username"];
+    const fields = ["email", "firstName", "lastName", "password"];
     customer = customer["customer"]
     const [fieldsState, setFieldsState] = useState(customer)
     const [modalOpen, setModalOpen] = useState(false)
@@ -21,7 +21,7 @@ const EditCustomer = (customer) =>{
         const newState = { ...fieldsState };
         newState[field] = newValue;
         return newState;
-      }
+    }
 
     return (
         <Modal

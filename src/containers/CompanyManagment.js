@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import CompaniesTable from "../components/companies-table";
 import {getCompaniesListAction} from "../actions/usersActions";
+import AddNewUser from "../components/add-user";
 import {
     Divider, Header, Icon, Placeholder, Segment,
   } from 'semantic-ui-react'
@@ -24,7 +25,7 @@ class CompanyManagment extends Component{
         return(
             <Segment>
                 <Header as="h2" icon textAlign="center">
-                <Icon name="user" circular />
+                <Icon name="shopping cart" circular />
                 <Header.Content>Company</Header.Content>
                 <Header.Subheader>
                     Manage the company&apos; attributes
@@ -49,6 +50,7 @@ class CompanyManagment extends Component{
                 )}
                 {!isLoading && (
                     <div className= "Company-managment-page">
+                        <AddNewUser userType="Company"/>
                         <CompaniesTable perPage={10}/>
                     </div>
                 )}

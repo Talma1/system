@@ -21,11 +21,11 @@ const DeleteCustomer = ({ userID }) => {
         onConfirm={() => {
           deleteCustomerAction(userID);
         }}
-        header="Confirm user deletion"
+        header="Confirm customer deletion"
         content={(
           <Modal.Content>
             {(
-              <p>{`Are you sure you want to delete the user #${userID} ?`}</p>
+              <p>{`Are you sure you want to delete the customer #${userID} ?`}</p>
             )}
           </Modal.Content>
         )}

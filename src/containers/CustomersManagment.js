@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import CustomersTable from "../components/customers-table";
+import AddNewUser from "../components/add-user";
 import {getCustomersListAction} from "../actions/usersActions";
 import {
     Divider, Header, Icon, Placeholder, Segment,
@@ -13,8 +14,8 @@ class CustomersManagment extends Component{
         this.state = {isLoading:true};
     }
 
-    async componentDidMount() {
-        await this.props.getCustomersList();   // GET request
+    componentDidMount() {
+        this.props.getCustomersList();   // GET request
         this.setState({isLoading: false});
     }
 
@@ -48,6 +49,7 @@ class CustomersManagment extends Component{
                 )}
                 {!isLoading && (
                     <div className= "Customers-managment-page">
+                        <AddNewUser userType="Customer"/>
                         <CustomersTable perPage={10}/>
                     </div>
                 )}

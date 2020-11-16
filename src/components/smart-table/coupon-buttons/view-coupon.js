@@ -9,7 +9,7 @@ const ViewCoupon = ({ couponId }) => (
     icon="eye"
     size="mini"
     as={Link}
-    to={`/users/${couponId}`}
+    to={`/coupons/${couponId}`}
   />
 )
 

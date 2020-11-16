@@ -22,6 +22,7 @@ import CouponManagment from "./containers/CouponManagment";
 import CouponStore from "./containers/CouponStore";
 import UserCoupons from "./containers/UserCoupons";
 import UserDetailes from "./containers/UserDetailes";
+import CouponDetailes from "./containers/CouponDetailes";
 
  
 class Main extends Component {
@@ -32,9 +33,9 @@ class Main extends Component {
       loginLink = <li><Link to="/" onClick={this.handlerLogout}>Logout</Link></li>;
     }
     // System permissions
-    const Administrator="מנהלן מערכת";
-    const Company="מדווח אירועים";
-    const Customer="בודק אירועים";
+    const Administrator="Administrator";
+    const Company="Company";
+    const Customer="Customer";
 
     // Dynamic routes for registered users.
     const administratorMenu = 
@@ -50,7 +51,7 @@ class Main extends Component {
     <span>
       <li><NavLink to="/store">Buy coupons</NavLink></li>
       <li><NavLink to="/coupons">My coupons</NavLink></li>
-      <li><NavLink to="/detailes">My details</NavLink></li>
+      <li><NavLink to="/user/">My details</NavLink></li>
     </span>;
 
     let userMenu = (this.props.role === Administrator) ? administratorMenu :( (this.props.role === Company) ? companyMenu: ((this.props.role === Customer) ? custumerMenu: <span></span>));
@@ -58,7 +59,7 @@ class Main extends Component {
         <Router>
             <ToastContainer/>
             <div>
-                <h1>Simple SPA</h1>
+                <h1>Coupon Store</h1>
                 <ul className="header">
                     <li><NavLink exact to="/">Home</NavLink></li>
                     {userMenu}
@@ -69,14 +70,15 @@ class Main extends Component {
                     <Route path="/Login" component={Login}/>
                     <Route path="/Register" component={Register}/> 
                     {/* Administrator routes*/}
-                    <PrivateRoute path="/company-manage" component={CompanyManagment} requiredRole={Administrator}/>
-                    <PrivateRoute path="/customers-manage" component={CustomersManagment} requiredRole={Administrator}/>
+                    <PrivateRoute path="/company-manage" component={CompanyManagment} requiredRole={[Administrator]}/>
+                    <PrivateRoute path="/customers-manage" component={CustomersManagment} requiredRole={[Administrator]}/>
                     {/* Company routes */}
-                    <PrivateRoute path="/coupon-manage" component={CouponManagment} requiredRole={Company}/>
+                    <PrivateRoute path="/coupon-manage" component={CouponManagment} requiredRole={[Company]}/>
                     {/* Customer routes */}
-                    <PrivateRoute path="/store" component={CouponStore} requiredRole={Customer}/>
-                    <PrivateRoute path="/coupons" component={UserCoupons} requiredRole={Customer}/>
-                    <PrivateRoute path="/detailes" component={UserDetailes} requiredRole={Customer}/>
+                    <PrivateRoute path="/store" component={CouponStore} requiredRole={[Customer]}/>
+                    <PrivateRoute path="/coupons" component={UserCoupons} requiredRole={[Customer]}/>
+                    <PrivateRoute path="/user/:userId?" component={UserDetailes} requiredRole={[Customer, Administrator]}/>
+                    <PrivateRoute path="/coupon/:couponId?" component={CouponDetailes} requiredRole={[Customer, Company]}/>
                     <Route component={NotFound}/>
                 </Switch>
             </div>

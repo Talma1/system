@@ -65,26 +65,56 @@ export const addCouponAction = (coupon) =>{
     })
 }
 
-export const getCouponListAction = () =>{
-    return dispatch =>{
-        const options={
-            method: "GET"
-        }
-        fetch(`${baseUrl}/coupons_list/`, options)
-        .then(function(response){
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
-            return response.json();
-        })
-        .then(function(data){
-            return dispatch({
-                type: "COUPONS",
-                payload: data
-            });
-        })
-        .catch(function(error) {
-            errorToast("Server problem in reading data process");
-        });
+export const getComapnyCouponsAction = async (companyId) =>{
+    return getCoupons("company_coupons_list", companyId);
+}
+
+export const getCustomerCouponsAction = async (customerId) =>{
+    return getCoupons("customer_coupons_list", customerId);
+}
+
+export const getCouponsListAction = async () =>{
+    return getCoupons("get-coupons", "");
+}
+
+const getCoupons = async (url, id) =>{
+    const options={
+        method: "GET"
     }
+    let data = [];
+    await fetch(`${baseUrl}/${url}/${id}`, options)
+    .then(function(response){
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response.json();
+    })
+    .then(function(dataFromServer){
+        data = dataFromServer
+    })
+    .catch(function(error) {
+        errorToast("Server problem in reading data process");
+    });
+    return data
+}
+
+export const getCouponDetails = async (couponId) =>{
+    let data = []
+    const options={
+        method: "GET"
+    }
+    await fetch(`${baseUrl}/get-coupon/${couponId}`, options)
+    .then(function(response){
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response.json();
+    })
+    .then(function(dataFromServer){
+        data = dataFromServer;
+    })
+    .catch(function(error) {
+        errorToast("Server problem in reading data process");
+    });
+    return data;
 }

@@ -4,19 +4,19 @@ import { User } from '../models/users';
 
 const baseUrl = 'http://127.0.0.1:8000/api';
 
-const Administrator="מנהלן מערכת";
-const Company="מדווח אירועים";
-const Customer="בודק אירועים";
 
-export const loginAction = (username, password) => {
+export const loginAction = (email, password) => {
 
     return async (dispatch) =>{
         const user = new User(); 
         user.password = password;
-        user.username = username;
+        user.email = email;
     
         const options = {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(user) 
         }
 
@@ -29,13 +29,13 @@ export const loginAction = (username, password) => {
         })
         .then(function(data){
             const isLogged = true;
-            const role = data.permissions;
+            const role = data.role;
+            const userId = data.id;
             infoToast("Login successful");
-            console.log(data);
             
             return dispatch({
                 type: "LOGIN",
-                payload: {isLogged, role}
+                payload: {isLogged, role, userId}
             })
         })
         .catch(function(error) {
@@ -46,9 +46,6 @@ export const loginAction = (username, password) => {
 
 export const registerAction = (user) => {
     return async (dispatch) =>{
-        const role = (user.permissions === "Administrator")? Administrator : (user.permissions === "Company" ? Company : Customer) ;
-        user.permissions = role;
-
         const options = {
             method: "POST",
             headers: {
@@ -71,14 +68,17 @@ export const registerAction = (user) => {
 }
 
 export const logoutAction = () =>{
-    return{
-        type: "LOGIN",
-        payload: {isLogged: false , role: ""}
+
+    return dispatch => {
+        return dispatch({
+            type: "LOGIN",
+            payload: {isLogged: false , role: ""}
+        });   
     }
 }
 
 export const getCustomersListAction = () =>{
-    return dispatch =>{
+    return async dispatch =>{
         getAction("/customers_list").then((data)=>{
             return dispatch({
                 type: "CUSTOMERS",
@@ -88,9 +88,8 @@ export const getCustomersListAction = () =>{
     }
 }
 
-
 export const getCompaniesListAction = () =>{
-    return dispatch =>{
+    return async dispatch =>{
         getAction("/companies_list").then((data)=>{
             console.log(data);
             return dispatch({
@@ -180,10 +179,48 @@ const updateUser = (userType, user) => {
     })
 }
 
-export const addCustomerAction = (customer) =>{
-    registerAction(customer);
+export const addUserAction = (user) =>{
+    registerAction(user);
 }
 
-export const addCompanyAction = (company) =>{
-    registerAction(company);
+export const getUserDetails = async (userId) =>{
+    let data = []
+    const options={
+        method: "GET"
+    }
+    await fetch(`${baseUrl}/get-user/${userId}`, options)
+    .then(function(response){
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response.json();
+    })
+    .then(function(dataFromServer){
+        data = dataFromServer;
+    })
+    .catch(function(error) {
+        errorToast("Server problem in reading data process");
+    });
+    return data;
+}
+
+export const purchaseCouponAction = async (coupon, userId) =>{
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(coupon) 
+    }
+
+    fetch(`${baseUrl}/purchase-coupon/${userId}`, options)
+    .then(function(response){
+        if (!response.ok) {
+            const error = response.status;
+            errorToast((error === 500) ? "Server problem in coupon purchase process" : "Can't purchase coupon");
+        }
+        else{
+            infoToast("coupon purchased!");
+        }
+    })
 }
